@@ -1,0 +1,146 @@
+<html>
+    <head>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.33/moment-timezone-with-data.min.js"></script>
+     <script>
+        $(document).ready(function() {
+            // Handle form submission
+            $("#myForm").submit(function(event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+                
+                // Get the form data
+                var formData = $(this).serialize();
+                
+                // Send an AJAX request to the servlet
+                $.ajax({
+                    type: "POST",
+                    url: "TimeConversionServlet",
+                    data: formData,
+                    success: function(response) {
+                        // Update the output on the page
+                        $("#output").html(response);
+                    }
+                });
+            });
+        });
+    </script>
+    <!-- java script for zone id  -->
+    <script>
+        function populateTimeZones() {
+            var dropdown1 = document.getElementById("timezone-dropdown1");
+            var dropdown2 = document.getElementById("timezone-dropdown2");
+            var timeZones = moment.tz.names(); // Use a library like Moment.js to get zone IDs
+            
+            timeZones.forEach(function(id) {
+                var option1 = document.createElement("option");
+                option1.value = id;
+                option1.text = id;
+                dropdown1.appendChild(option1);
+
+                var option2 = document.createElement("option");
+                option2.value = id;
+                option2.text = id;
+                dropdown2.appendChild(option2);
+            });
+        }
+    </script>
+        <style>
+             .container {
+                position: relative;
+            }
+            img {
+                width: 100%;
+                height:100%;
+            }
+            .form-content {
+                float:right;
+                position: absolute;
+                bottom: 10%;
+                right: 15%;
+                background-color: rgba(0, 0, 0, 0.411);
+                border:1px solid black;
+                border-radius: 16px;
+                color: #fff;
+                height: 450px;
+                width: 400px;
+                
+            }
+            .form-content h3,h5{
+            	margin:2px;
+                text-shadow: 0 0 3px #d1a563, 0 0 5px #d1a563;
+            }
+            .form-content input[type=datetime-local], select{
+                width:95%;
+                padding:15px;
+                margin:5px 10px 22px 10px;
+                border:2px solid white;
+                background-color:rgba(0,0,0,.5);
+                color:white;
+            }
+            .form-content:hover{
+                box-shadow: 5px 5px 10px black;
+            }
+            .form-content input[type= submit]{
+                
+                width:95%;
+                padding:15px;
+                margin:5px 10px 22px 10px;
+                border:2px solid yellow;
+                background-color:rgba(0,0,0,.5);
+                color: yellow;
+                font-family:Arial, Helvetica, sans-serif;
+                font-weight: bold;
+            }
+            .form-content input[type=submit]:hover{
+                box-shadow:2px 2px 5px yellow;
+                outline: none;
+                color:yellow;
+               border:1px solid yellow;
+                
+            }
+            .form-content input[type=datetime-local]:focus, select:focus {
+                background-color: #565656;
+                outline: none;
+                box-shadow:2px 2px 5px #565656;
+            }
+            .form-content input[type=datetime-local]:hover, select:hover {
+                background-color: #565656;
+                outline: none;
+                box-shadow:2px 2px 5px #565656;
+            }
+            .result{
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+            align:center;
+            }
+        </style>
+    </head>
+    <body onload="populateTimeZones()">
+        <div class="container">
+            
+            <div class="form-content">
+            <h3><center>Time Converter</center></h3>
+                <form method="post" action="TimeConversionServlet" id="myForm">
+                    <br/>
+                    <h5>From</h5>
+                    <select id="timezone-dropdown1" name="fromcountry">
+    				    <option value="">Select a time zone</option>
+    				</select>
+                    <input type ="datetime-local" name="time" >
+                    <br/>
+                    <h5>To</h5>
+                    <select id="timezone-dropdown2" name="tocountry">
+        				<option value="">Select a time zone</option>
+    				</select>
+                    <br/>
+                    <input type="submit" value="Convert">
+                    
+                </form>
+                <center><div id="output" class="result"></div></center>
+            </div>
+            <img src="bgm2.jpg">
+        </div>
+        
+    </body>
+</html>
